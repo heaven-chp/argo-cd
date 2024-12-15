@@ -1,7 +1,6 @@
 # argo-cd
 
-## Argo CD
- - [Argo CD](https://dev.chp.kr/workflow/argo/argo-cd/)
+## [Argo CD](https://dev.chp.kr/workflow/argo/argo-cd/)
 
 <br/>
 

@@ -28,6 +28,7 @@ spec:
                 end
                 return hs
           
+          server:
             service:
               type: NodePort
               nodePortHttp: 30080
