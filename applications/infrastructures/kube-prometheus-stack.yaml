@@ -1,9 +1,35 @@
-# argo-cd
-
-## Argo CD install
- - 
-```bash
-helm repo add argo https://argoproj.github.io/argo-helm
-helm repo update argo
-helm install argo-cd argo/argo-cd --namespace argo-cd --create-namespace
-```
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argo-cd
+spec:
+  project: default
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      targetRevision: 66.6.0
+      helm:
+        parameters:
+          - name: alertmanager.service.type
+            value: NodePort
+          - name: grafana.adminPassword
+            value: admin
+          - name: grafana.service.type
+            value: NodePort
+          - name: grafana.service.nodePort
+            value: '30100'
+          - name: prometheus.service.type
+            value: NodePort
+  destination:
+    name: in-cluster
+    namespace: kube-prometheus-stack
+  syncPolicy:
+    retry:
+      limit: -1
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
