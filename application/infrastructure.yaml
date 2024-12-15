@@ -9,7 +9,7 @@ spec:
   sources:
     - repoURL: https://github.com/heaven-chp/argo-cd
       targetRevision: main
-      path: infrastructures/
+      path: applications/infrastructures/
   destination:
     name: in-cluster
     namespace: default
