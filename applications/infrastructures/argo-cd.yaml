@@ -1,0 +1,44 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-cd
+  namespace: argo-cd
+spec:
+  project: default
+  sources:
+    - repoURL: https://argoproj.github.io/argo-helm
+      chart: argo-cd
+      targetRevision: 7.7.10
+      helm:
+        valuesObject:
+          configs:
+            cm:
+              resource.customizations.health.argoproj.io_Application: |
+                hs = {}
+                hs.status = "Progressing"
+                hs.message = ""
+                if obj.status ~= nil then
+                  if obj.status.health ~= nil then
+                    hs.status = obj.status.health.status
+                    if obj.status.health.message ~= nil then
+                      hs.message = obj.status.health.message
+                    end
+                  end
+                end
+                return hs
+          
+            service:
+              type: NodePort
+              nodePortHttp: 30080
+  destination:
+    name: in-cluster
+    namespace: argo-cd
+  syncPolicy:
+    retry:
+      limit: -1
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true

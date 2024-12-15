@@ -1,0 +1,23 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infrastructure
+  namespace: argo-cd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/heaven-chp/argo-cd
+      targetRevision: main
+      path: infrastructures/
+  destination:
+    name: in-cluster
+    namespace: default
+  syncPolicy:
+    retry:
+      limit: -1
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
