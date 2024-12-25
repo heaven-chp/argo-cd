@@ -1,0 +1,23 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: api-gateway
+  namespace: argo-cd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/heaven-chp/argo-cd
+      targetRevision: test
+      path: applications/infrastructures/api-gateway/
+  destination:
+    name: in-cluster
+    namespace: argo-cd
+  syncPolicy:
+    retry:
+      limit: -1
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
