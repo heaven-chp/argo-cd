@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pocketbase
+spec:
+  selector:
+    matchLabels:
+      app: pocketbase
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: pocketbase
+    spec:
+      serviceAccountName: pocketbase
+      containers:
+        - name: pocketbase
+          image: ghcr.io/heaven-chp/pocketbase:test
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8090
+              protocol: TCP
+          command: ["/main", "serve"]
+          args:
+            - --http
+            - :8090
+            - --dir
+            - /pb_data
+          volumeMounts:
+            - name: pb-data
+              mountPath: /pb_data
+              readOnly: false
+      volumes:
+        - name: pb-data
+          persistentVolumeClaim:
+            claimName: pocketbase
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoSchedule

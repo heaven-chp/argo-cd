@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pocketbase
+  namespace: argo-cd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/heaven-chp/argo-cd
+      targetRevision: test
+      path: applications/infrastructures/pocketbase/
+      kustomize:
+        namespace: pocketbase
+  destination:
+    name: in-cluster
+    namespace: argo-cd
+  syncPolicy:
+    retry:
+      limit: -1
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
