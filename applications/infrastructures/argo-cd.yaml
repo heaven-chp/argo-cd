@@ -9,7 +9,7 @@ spec:
   sources:
     - repoURL: https://argoproj.github.io/argo-helm
       chart: argo-cd
-      targetRevision: 7.7.10
+      targetRevision: 7.7.11
       helm:
         valuesObject:
           configs:
@@ -27,6 +27,11 @@ spec:
                   end
                 end
                 return hs
+          
+            params:
+              server.insecure: true
+              server.rootpath: /argo-cd
+              server.disable.auth: true
           
           server:
             service:
