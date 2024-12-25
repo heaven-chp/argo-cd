@@ -14,7 +14,7 @@ spec:
         namespace: pocketbase
   destination:
     name: in-cluster
-    namespace: argo-cd
+    namespace: pocketbase
   syncPolicy:
     retry:
       limit: -1
