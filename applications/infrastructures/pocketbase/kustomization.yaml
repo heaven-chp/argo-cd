@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: pocketbase
 
 resources:
+  - config-map.yaml
   - deployment.yaml
   - persistent-volume-claim.yaml
   - service.yaml
