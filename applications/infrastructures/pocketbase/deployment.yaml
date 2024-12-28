@@ -24,15 +24,23 @@ spec:
               protocol: TCP
           command: ["/main", "serve"]
           args:
-            - --http
-            - :8090
+            - --config-file
+            - /etc/pocketbase/config.json
             - --dir
             - /pb_data
+            - --http
+            - :8090
           volumeMounts:
+            - name: config
+              mountPath: /etc/pocketbase
+              readOnly: true
             - name: pb-data
               mountPath: /pb_data
               readOnly: false
       volumes:
+        - name: config
+          configMap:
+            name: pocketbase
         - name: pb-data
           persistentVolumeClaim:
             claimName: pocketbase
