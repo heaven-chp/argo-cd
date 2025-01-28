@@ -30,7 +30,6 @@ spec:
           
             params:
               server.insecure: true
-              server.rootpath: /argo-cd
               server.disable.auth: true
           
           server:
